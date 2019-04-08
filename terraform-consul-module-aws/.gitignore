@@ -1,0 +1,7 @@
+.terraform/
+*.tfstate*
+*.tfvars
+.kitchen/
+example/test/.DS_Store
+example/test/integration/.DS_Store
+example/test/integration/default/.DS_Store
