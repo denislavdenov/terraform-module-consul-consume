@@ -57,7 +57,7 @@ resource "aws_key_pair" "key" {
 # Data source that is needed in order to dinamicly publish values of variables into the script that is creating Consul configuration files and starting it.
 
 data "template_file" "var" {
-  template   = "${file("${path.module}/scripts/start_consul.tpl")}"
+  template = "${file("${path.module}/scripts/start_consul.tpl")}"
 
   vars = {
     DOMAIN       = "${var.domain}"
@@ -72,7 +72,7 @@ data "template_file" "var" {
 
 # Below are the 3 Consul servers and 1 consul client.
 resource "aws_instance" "consul_servers" {
-  ami                         = "${var.ami["server"]}"
+  ami                         = "${var.ami_server["${var.verr}"]}"
   instance_type               = "${var.instance_type}"
   subnet_id                   = "${var.subnet_id}"
   key_name                    = "${aws_key_pair.key.id}"
@@ -122,7 +122,7 @@ output "nginx_client_count" {
 }
 
 output "client_ami" {
-  value = "${var.ami["client"]}"
+  value = "${var.ami_client["${var.verr}"]}"
 }
 
 output "instance_type" {

@@ -9,13 +9,23 @@ variable "security_group_id" {
   description = "Security group that you want to use."
 }
 
-variable "ami" {
+variable "ami_server" {
   type        = "map"
   description = "AMI IDs based on if node is a client or a server"
 
   default = {
-    "client" = "ami-06c350abb0d40236f"
-    "server" = "ami-0085f11818f401bdf"
+    "1.4.3" = "ami-0085f11818f401bdf"
+    "1.4.4" = "ami-0d9c2893a43ede4d8"
+  }
+}
+
+variable "ami_client" {
+  type        = "map"
+  description = "AMI IDs based on if node is a client or a server"
+
+  default = {
+    "1.4.3" = "ami-06c350abb0d40236f"
+    "1.4.4" = "ami-0b1d5f3289da64022"
   }
 }
 
@@ -50,3 +60,5 @@ variable "nginx_client_count" {
 variable "join_wan" {
   description = "Variable used to properly assign tags for auto join."
 }
+
+variable "verr" {}

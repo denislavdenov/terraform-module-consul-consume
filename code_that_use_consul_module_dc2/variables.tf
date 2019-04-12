@@ -58,3 +58,8 @@ variable "join_wan" {
 
   default = "dc1"
 }
+
+variable "verr" {
+  description = "Version for servers and clients"
+  default     = "1.4.4"
+}

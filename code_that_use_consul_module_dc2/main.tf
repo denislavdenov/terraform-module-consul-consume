@@ -1,6 +1,7 @@
 module "dc2" {
   source = "../terraform-consul-module-aws"
 
+  verr              = "${var.verr}"
   instance_type     = "${var.instance_type}"
   security_group_id = "${var.security_group_id}"
   region            = "${var.region}"
