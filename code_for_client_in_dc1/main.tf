@@ -10,24 +10,25 @@ data "terraform_remote_state" "state" {
 }
 
 resource "aws_instance" "nginx_clients" {
-  ami                         = "${data.terraform_remote_state.state.client_ami}"
-  instance_type               = "${data.terraform_remote_state.state.instance_type}"
-  subnet_id                   = "${data.terraform_remote_state.state.subnet_id}"
-  key_name                    = "${data.terraform_remote_state.state.key_pair}"
-  vpc_security_group_ids      = ["${data.terraform_remote_state.state.security_group_id}"]
-  iam_instance_profile        = "${data.terraform_remote_state.state.instance_profile}"
-  private_ip                  = "${data.terraform_remote_state.state.IP_client}${count.index + 1}"
+  ami                         = "${data.terraform_remote_state.state.outputs.client_ami}"
+  instance_type               = "${data.terraform_remote_state.state.outputs.instance_type}"
+  subnet_id                   = "${data.terraform_remote_state.state.outputs.subnet_id}"
+  key_name                    = "${data.terraform_remote_state.state.outputs.key_pair}"
+  vpc_security_group_ids      = data.terraform_remote_state.state.outputs.security_group_id
+  iam_instance_profile        = "${data.terraform_remote_state.state.outputs.instance_profile}"
+  private_ip                  = "${data.terraform_remote_state.state.outputs.IP_client}${count.index + 1}"
   associate_public_ip_address = true
-  count                       = "${data.terraform_remote_state.state.nginx_client_count}"
+  count                       = "${data.terraform_remote_state.state.outputs.nginx_client_count}"
 
-  tags {
+  tags = {
     Name   = "consul-client${count.index + 1}"
-    consul = "${data.terraform_remote_state.state.dcname}"
+    consul = "${data.terraform_remote_state.state.outputs.dcname}"
   }
 
   connection {
     user        = "ubuntu"
     private_key = "${file("~/.ssh/id_rsa")}"
+    host        = self.public_ip
   }
 
   provisioner "file" {
@@ -36,7 +37,7 @@ resource "aws_instance" "nginx_clients" {
   }
 
   provisioner "file" {
-    content     = "${data.terraform_remote_state.state.data_rendered}"
+    content     = "${data.terraform_remote_state.state.outputs.data_rendered}"
     destination = "/var/tmp/scripts/start_consul.sh"
   }
 
@@ -55,3 +56,5 @@ resource "aws_instance" "nginx_clients" {
 output "client_ips" {
   value = "${aws_instance.nginx_clients.*.public_ip}"
 }
+
+

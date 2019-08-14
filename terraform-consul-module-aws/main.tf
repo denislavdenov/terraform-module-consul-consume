@@ -82,7 +82,7 @@ resource "aws_instance" "consul_servers" {
   associate_public_ip_address = true
   count                       = "${var.server_count}"
 
-  tags {
+  tags = {
     Name     = "consul-server${count.index + 1}"
     consul   = "${var.dcname}"
     join_wan = "${var.join_wan}"
@@ -91,11 +91,13 @@ resource "aws_instance" "consul_servers" {
   connection {
     user        = "ubuntu"
     private_key = "${file("~/.ssh/id_rsa")}"
+    host        = self.public_ip
   }
 
   provisioner "file" {
     source      = "${path.module}/scripts"
     destination = "/var/tmp"
+
   }
 
   provisioner "file" {
