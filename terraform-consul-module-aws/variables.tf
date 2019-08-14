@@ -14,8 +14,10 @@ variable "ami_server" {
   description = "AMI IDs based on if node is a client or a server"
 
   default = {
+    "1.3.0" = "ami-04fab3550d820396a"
     "1.4.3" = "ami-0085f11818f401bdf"
     "1.4.4" = "ami-0d9c2893a43ede4d8"
+    "1.5.0" = "ami-07d163e08bb827aa2"
   }
 }
 
@@ -24,8 +26,10 @@ variable "ami_client" {
   description = "AMI IDs based on if node is a client or a server"
 
   default = {
+    "1.3.0" = "ami-0a28b47f37b9e2e19"
     "1.4.3" = "ami-06c350abb0d40236f"
     "1.4.4" = "ami-0b1d5f3289da64022"
+    "1.5.0" = "ami-08841e3ee41f558b6"
   }
 }
 
