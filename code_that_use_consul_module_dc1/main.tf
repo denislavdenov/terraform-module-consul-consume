@@ -1,5 +1,5 @@
 module "dc1" {
-  source = "../terraform-consul-module-aws"
+  source = "git::ssh://git@github.com:denislavdenov/terraform-module-consul-consume.git//code_for_client_in_dc1"
 
   verr              = "${var.verr}"
   instance_type     = "${var.instance_type}"
